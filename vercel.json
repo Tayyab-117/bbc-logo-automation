@@ -1,0 +1,19 @@
+{
+  "functions": {
+    "api/*.py": {
+      "maxDuration": 300,
+      "memory": 1024,
+      "includeFiles": "logos/**"
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/add_logo",
+      "dest": "/api/add_logo.py"
+    },
+    {
+      "src": "/api/add-logo",
+      "dest": "/api/add_logo.py"
+    }
+  ]
+}
