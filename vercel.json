@@ -11,6 +11,14 @@
     {
       "source": "/api/add-logo",
       "destination": "/api/add_logo.py"
+    },
+    {
+      "source": "/api/languages",
+      "destination": "/api/languages.py"
+    },
+    {
+      "source": "/api/health",
+      "destination": "/api/health.py"
     }
   ]
 }

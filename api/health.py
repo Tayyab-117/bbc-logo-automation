@@ -2,6 +2,7 @@
 from flask import Flask, jsonify
 app = Flask(__name__)
 
-@app.get('/api/health')
+@app.get('/')
+@app.get('/health')
 def health():
     return jsonify({"ok": True})

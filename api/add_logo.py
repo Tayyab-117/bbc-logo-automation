@@ -71,7 +71,8 @@ def safe_name(base: str, language: str):
         ext = ".jpg"
     return f"{root}_{language}{ext}"
 
-@app.route("/api/add_logo", methods=["POST"])
+@app.route("/", methods=["POST"])
+@app.route("/add_logo", methods=["POST"])
 def add_logo():
     try:
         language = request.form.get("language")

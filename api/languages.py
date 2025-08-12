@@ -5,7 +5,8 @@ app = Flask(__name__)
 
 LOGOS_ROOT = os.path.join(os.path.dirname(__file__), "..", "logos")
 
-@app.route("/api/languages")
+@app.route("/")
+@app.route("/languages")
 def languages():
     langs = []
     if os.path.isdir(LOGOS_ROOT):
