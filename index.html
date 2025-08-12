@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Logo Stamper</title>
+  <title>Logo stamper</title>
   <style>
     :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
     body { margin: 0; background: #0b0f17; color: #e6e9ef; }
@@ -35,8 +35,8 @@
 </head>
 <body>
   <div class="wrap">
-    <h1>🖼️ Logo Stamper</h1>
-    <p class="small">Upload images or paste URLs, choose a language logo, and download the processed file. This page talks to a Python API running on Vercel Functions.</p>
+    <h1>🖼️ Logo stamper</h1>
+    <p class="small">Upload images or paste URLs, choose a language logo, and download the processed file.</p>
     <div class="card">
       <form id="stampForm">
         <div class="row">
@@ -76,16 +76,10 @@
         </div>
       </form>
       <div id="result" class="small"></div>
-
-      <details style="margin-top:16px;">
-        <summary>How it works</summary>
-        <p>The browser sends your files and parameters to <code>/api/add_logo</code>. The API processes images with Pillow and responds with either a single image or a ZIP file when there are multiple outputs.</p>
-        <p>Place your brand assets in <code>/logos/&lt;Language&gt;/**.png</code>. The API uses the first <code>.png</code> (or <code>.jpg</code>) it finds under that language.</p>
-      </details>
     </div>
 
     <div class="footer">
-      <span class="pill">Python</span> <span class="pill">Flask</span> <span class="pill">Vercel Functions</span> <span class="pill">Pillow</span>
+      <span class="pill">Python</span> <span class="pill">Flask</span> <span class="pill">Vercel functions</span> <span class="pill">Pillow</span>
     </div>
   </div>
 

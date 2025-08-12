@@ -1,8 +1,7 @@
-
 from flask import Flask, jsonify
 app = Flask(__name__)
 
-@app.get('/')
-@app.get('/health')
+@app.get("/")
+@app.get("/health")
 def health():
     return jsonify({"ok": True})

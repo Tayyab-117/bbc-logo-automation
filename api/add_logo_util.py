@@ -1,22 +1,21 @@
-from PIL import Image
-from io import BytesIO
+from PIL import Image, ImageOps
 
-def paste_logo(main_img: Image.Image, logo_img: Image.Image, language: str, logo_scale: float = 0.40):
+def paste_logo(main_img: Image.Image, logo_img: Image.Image, logo_scale: float = 0.40):
     """
     Paste `logo_img` onto `main_img` at bottom-left with padding.
+    - Applies EXIF orientation.
     - logo_scale is a fraction of main image width.
-    Returns a new PIL Image.
+    Returns a new PIL Image (RGBA).
     """
-    if main_img.mode != "RGBA":
-        main = main_img.convert("RGBA")
-    else:
-        main = main_img.copy()
+    # Normalize orientation
+    main = ImageOps.exif_transpose(main_img)
+    if main.mode != "RGBA":
+        main = main.convert("RGBA")
 
     # Ensure logo has alpha
-    if logo_img.mode != "RGBA":
-        logo = logo_img.convert("RGBA")
-    else:
-        logo = logo_img.copy()
+    logo = ImageOps.exif_transpose(logo_img)
+    if logo.mode != "RGBA":
+        logo = logo.convert("RGBA")
 
     mw, mh = main.size
     # Scale logo width relative to main image width

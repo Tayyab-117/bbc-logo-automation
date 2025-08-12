@@ -3,10 +3,21 @@ from flask import Flask, jsonify
 
 app = Flask(__name__)
 
-LOGOS_ROOT = os.path.join(os.path.dirname(__file__), "..", "logos")
+BASES = [
+    os.getcwd(),
+    os.path.join(os.path.dirname(__file__), ".."),
+    os.path.dirname(__file__),
+]
+def _resolve_logos_root():
+    for base in BASES:
+        cand = os.path.abspath(os.path.join(base, 'logos'))
+        if os.path.isdir(cand):
+            return cand
+    return os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'logos'))
+LOGOS_ROOT = _resolve_logos_root()
 
-@app.route("/")
-@app.route("/languages")
+@app.get("/")
+@app.get("/languages")
 def languages():
     langs = []
     if os.path.isdir(LOGOS_ROOT):
@@ -16,7 +27,3 @@ def languages():
                 langs.append(name)
     langs.sort()
     return jsonify({"languages": langs})
-
-# Local run for testing only
-if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=5001, debug=True)
