@@ -87,7 +87,9 @@ def _parse_logo_scale(raw: str):
     return max(0.05, min(1.0, v))
 
 @app.post("/")
+@app.post("/api/add_logo")
 @app.post("/add_logo")
+@app.post("/api/add_logo")
 def add_logo():
     try:
         language = request.form.get("language")

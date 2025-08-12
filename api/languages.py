@@ -17,6 +17,7 @@ def _resolve_logos_root():
 LOGOS_ROOT = _resolve_logos_root()
 
 @app.get("/")
+@app.get('/api/languages')
 @app.get("/languages")
 def languages():
     langs = []

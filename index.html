@@ -92,7 +92,8 @@
 
     async function loadLanguages() {
       try {
-        const res = await fetch('/api/languages');
+        let res = await fetch('/api/languages');
+        if (!res.ok) { res = await fetch('/api/languages.py'); }
         const data = await res.json();
         languageSelect.innerHTML = '<option value="" disabled selected>Select language</option>';
         data.languages.forEach(lang => {
