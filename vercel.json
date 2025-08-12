@@ -1,4 +1,5 @@
 {
+  "framework": null,
   "functions": {
     "api/*.py": {
       "maxDuration": 300,
@@ -6,14 +7,10 @@
       "includeFiles": "logos/**"
     }
   },
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/add_logo",
-      "dest": "/api/add_logo.py"
-    },
-    {
-      "src": "/api/add-logo",
-      "dest": "/api/add_logo.py"
+      "source": "/api/add-logo",
+      "destination": "/api/add_logo.py"
     }
   ]
 }
