@@ -10,7 +10,18 @@ from add_logo_util import paste_logo
 
 app = Flask(__name__)
 
-LOGOS_ROOT = os.path.join(os.path.dirname(__file__), "..", "logos")
+BASES = [
+    os.getcwd(),
+    os.path.join(os.path.dirname(__file__), ".."),
+    os.path.dirname(__file__),
+]
+def _resolve_logos_root():
+    for base in BASES:
+        cand = os.path.abspath(os.path.join(base, 'logos'))
+        if os.path.isdir(cand):
+            return cand
+    return os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'logos'))
+LOGOS_ROOT = _resolve_logos_root()
 
 def find_logo_for_language(language: str):
     """
@@ -161,6 +172,7 @@ def add_logo():
 
     except Exception as e:
         tb = traceback.format_exc()
+        print('FUNCTION ERROR', e, tb, flush=True)
         return Response(f"Error: {e}\n\n{tb}", status=500, mimetype="text/plain")
 
 # For local testing: `python api/add_logo.py`
