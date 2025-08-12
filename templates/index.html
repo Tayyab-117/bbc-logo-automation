@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BBC Logo Stamper Tool (Flask)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f9fafc 0%, #eef1f6 100%);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            background: #fff;
+            max-width: 480px;
+            margin: 3em auto 2em auto;
+            border-radius: 18px;
+            box-shadow: 0 6px 36px 0 rgba(165,28,28,0.10);
+            padding: 2.5em 2.5em 2em 2.5em;
+        }
+        h1 {
+            text-align: center;
+            color: #a51c1c;
+            font-weight: 700;
+            margin-top: 0;
+        }
+        .form-section {
+            margin-bottom: 1.7em;
+        }
+        label {
+            font-weight: 500;
+            color: #2d2d2d;
+            margin-bottom: 0.3em;
+            display: block;
+        }
+        input[type="file"], select, textarea {
+            width: 100%;
+            padding: 0.65em 0.9em;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            font-size: 1em;
+            margin-top: 0.35em;
+            margin-bottom: 0.3em;
+            background: #f7f7f9;
+        }
+        textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+        .btn {
+            display: inline-block;
+            width: 100%;
+            background: linear-gradient(90deg, #a51c1c, #e96e50);
+            color: white;
+            font-size: 1.14em;
+            font-weight: bold;
+            border-radius: 7px;
+            border: none;
+            padding: 0.85em 0;
+            margin-top: 1.2em;
+            cursor: pointer;
+            transition: box-shadow 0.15s, background 0.23s;
+            box-shadow: 0 4px 12px rgba(229, 111, 80, 0.09);
+        }
+        .btn:hover {
+            background: linear-gradient(90deg, #e96e50, #a51c1c);
+            box-shadow: 0 7px 28px rgba(165,28,28,0.10);
+        }
+        .messages {
+            margin-bottom: 1em;
+        }
+        .danger {
+            color: #d13a3a;
+            background: #ffe7e7;
+            border-left: 5px solid #d13a3a;
+            padding: 0.7em 1em;
+            border-radius: 6px;
+            margin-bottom: 0.7em;
+            font-weight: 500;
+        }
+        .warning {
+            color: #c7971e;
+            background: #fff9e2;
+            border-left: 5px solid #c7971e;
+            padding: 0.7em 1em;
+            border-radius: 6px;
+            margin-bottom: 0.7em;
+            font-weight: 500;
+        }
+        .success {
+            color: #198754;
+            background: #e7ffe7;
+            border-left: 5px solid #198754;
+            padding: 0.7em 1em;
+            border-radius: 6px;
+            margin-bottom: 0.7em;
+            font-weight: 500;
+        }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            left: 0; top: 0; width: 100%; height: 100%;
+            overflow: auto;
+            background: rgba(0,0,0,0.32);
+        }
+        .modal-content {
+            background: #fff;
+            margin: 12% auto;
+            padding: 2.3em 2.3em 2em 2.3em;
+            border-radius: 16px;
+            width: 90%; max-width: 400px;
+            text-align: center;
+            box-shadow: 0 8px 36px rgba(0,0,0,0.14);
+            position: relative;
+        }
+        .close {
+            color: #a51c1c;
+            position: absolute;
+            right: 1.2em; top: 1.2em;
+            font-size: 2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .close:hover { color: #d33; }
+        .download-btn {
+            background: linear-gradient(90deg, #1ca55c, #2eb67d);
+            color: #fff;
+            font-size: 1.1em;
+            padding: 0.65em 2.4em;
+            border-radius: 7px;
+            border: none;
+            text-decoration: none;
+            margin-top: 1em;
+            display: inline-block;
+            font-weight: 600;
+            transition: background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 3px 18px rgba(44, 203, 112, 0.10);
+        }
+        .download-btn:hover {
+            background: linear-gradient(90deg, #2eb67d, #1ca55c);
+            box-shadow: 0 3px 18px rgba(44, 203, 112, 0.14);
+        }
+        @media (max-width: 600px) {
+            .container { padding: 1em 0.3em 1.5em 0.3em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BBC Logo Stamper Tool</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="messages">
+            {% for category, message in messages %}
+              <div class="{{category}}">{{message}}</div>
+            {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-section">
+                <label for="uploaded_files">Upload Images or Excel File</label>
+                <input type="file" id="uploaded_files" name="uploaded_files" multiple accept=".jpg,.jpeg,.png,.xlsx">
+            </div>
+
+            <div class="form-section">
+                <label for="url_input">Paste Image URLs</label>
+                <textarea name="url_input" id="url_input" placeholder="Paste image URLs here (one per line)"></textarea>
+            </div>
+
+            <div class="form-section">
+                <label for="language">Select Language</label>
+                <select name="language" id="language" required>
+                    {% for lang in languages %}
+                        <option value="{{lang}}">{{lang}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button class="btn" type="submit">Process Images</button>
+        </form>
+    </div>
+
+    <!-- Modal for download -->
+    <div id="downloadModal" class="modal">
+      <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <h2>Download Ready!</h2>
+        <p>Your images have been processed and are ready to download.</p>
+        <a class="download-btn" href="{{ url_for('download') }}">Download All (ZIP)</a>
+      </div>
+    </div>
+
+    {% if download_ready and request.args.get('download') %}
+        <script>
+        // Show modal when download_ready is true
+        window.onload = function() {
+          document.getElementById("downloadModal").style.display = "block";
+        }
+      </script>
+    {% endif %}
+
+    <script>
+      // Modal close handler
+      document.addEventListener('DOMContentLoaded', function() {
+        var modal = document.getElementById("downloadModal");
+        var closeBtn = document.getElementById("closeModal");
+        if(closeBtn) {
+          closeBtn.onclick = function() {
+            modal.style.display = "none";
+            // Refresh the page after closing the modal
+            window.location.href = window.location.pathname;
+          };
+        }
+      });
+    </script>
+</body>
+</html>
